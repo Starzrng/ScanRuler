@@ -7,6 +7,41 @@ saves carry the same number as `appVersion`. How a release is cut is in
 
 ## Unreleased
 
+- **A hole's depth is not the agent's to invent** (2026-11-02). A scanner sees
+  into a bore only as far as light reaches it, so a bore's far end is missing
+  information rather than geometry: the mouth's diameter and its axis are
+  evidence, the depth is not. The guide now has the agent build to what is seen,
+  never close a bore with an invented floor and never take a depth from the part's
+  function, and deliver the depth as one line in the report — *to be set by hand*.
+  A person with the STEP changes a depth in one edit; an invented one costs
+  volume, a gate, and a model that looks finished and is not. Two runs had
+  invented a Ø3.3 blind at 6.0 mm against 2.0 mm of visible wall.
+- **T never goes below the scanner's 0.06 mm** (2026-11-02). Whatever the part is
+  — cast, printed, moulded, machined — the instrument's own error is 0.06 mm and
+  up, so a tolerance tighter than that measures a coincidence, not an accuracy,
+  and the machined row's 0.05 is raised to 0.06. T = max(what design and process
+  need, 0.06).
+- **Every measurement is a nominal, a bias and noise** (2026-11-02). T covers the
+  noise; the bias is signed and often known — a matting coat 20–30 µm outward, a
+  print shrinking holes inward — so it is read off the largest least-doubtful
+  faces, said in the report, and subtracted before the nominal is chosen, while
+  the model itself is never moved to chase it. An offset under 0.06 mm is inside
+  the scanner's own error and is reported as "consistent with", never applied. In
+  the corpus reference a person set thirty-two holes to exactly Ø2.000 on a
+  printed part whose scan reads them 68 µm small; that is the judgement the rule
+  writes down.
+- **A dimension the scan cannot settle is named, not guessed** (2026-11-02). The
+  report carries one line per such dimension, marked **(I)** with the evidence it
+  does have and the words *to be set by hand*; a number chosen to close the mesh
+  is not a measurement and is never silent.
+- **The inventory is counted against the scan, mechanically** (2026-11-02). A list
+  written from the agent's own reading is as complete as that reading was, so the
+  plan gate now puts the scan's own `curvedRuns` — every radius, every repeated
+  feature and its count — beside the inventory and accounts for each before the
+  first feature. The same commit fixes the gate's wording, which had asked for a
+  `scan_segment { kind: "cylinder" }` that 0.9.2 does not accept: `scan_segment`
+  fits planes only, and a curved run names its own surface.
+
 - **Ask your agent to update its connector** (2026-10-31). The banner that says
   your ScanRuler connector is out of date now starts with a sentence to copy and
   paste into your AI agent's chat, and the agent changes the setting for you. All
