@@ -90,9 +90,10 @@ describe('the Reverse engineer’s guides', () => {
     expect(first.guides.map((g) => g.topic)).toEqual(['model', 'scan-to-cad'])
     expect(first.next).toBeUndefined()
     expect(first.guides[0].later?.map((l) => l.section)).toEqual(['2. Building'])
-    expect(first.guides[1].later?.map((l) => l.section)).toEqual(['3. Measuring'])
+    expect(first.guides[1].later?.map((l) => l.section)).toEqual(['3. Measuring', '5. The design loop and validation'])
     expect(first.guides[1].text).toContain('\n### 4a. By archetype\n')
-    expect(first.note).toMatch(/model keeps "2\. Building" \(before the first feature is added[^)]*\) for later: read it when that moment comes, before the step it is for — guide_read \{ topic: "model", section: "2\. Building" \}\. scan-to-cad keeps "3\. Measuring" \(before the first measurement[^)]*\) for later/)
+    expect(first.note).toMatch(/model keeps "2\. Building" \(before the first feature is added[^)]*\) for later: read it when that moment comes, before the step it is for — guide_read \{ topic: "model", section: "2\. Building" \}\./)
+    expect(first.note).toMatch(/scan-to-cad keeps "3\. Measuring" \(before the first measurement[^)]*\), "5\. The design loop and validation" \(the first build is done[^)]*\) for later/)
     expect(JSON.stringify(first).length).toBeLessThanOrEqual(GUIDE_ANSWER_CAP)
   })
 

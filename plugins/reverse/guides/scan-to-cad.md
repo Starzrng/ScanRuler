@@ -181,6 +181,8 @@ Build as the model guide's §2 says; what the scan adds:
 
 ## 5. The design loop and validation
 
+<!-- read when: the first build is done and you are about to ask for a review — the loop, the patches, and what a verdict means -->
+
 **The loop, after every feature group from the first on:**
 1. `reverse_body_review { tolerance: T }` — the volume error and the live compare in one call: `places` ranked by volume and depth (each missing, excess or off, with mm³, depth, where, the nearest face's maker and the plan's region), a picture of the map on the scan with the places numbered, the `trend` against the last and the first review, the target's verdict, and `next`.
    Reading its fields: a place's `at` and `box` are what `view_render { frame }` and `section_render { frame: { world } }` take; `mean` is signed as compare reads it, positive where the model lies inside the scan; `by` says what saw the place (volume, map, both, or far — past the reach); `score.withinT` counts every vertex read or far, so material not modelled counts against it; every review is kept in the session for `trend`; `target` is the plan's verdict with its `next` when not done.

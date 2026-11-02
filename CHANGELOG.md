@@ -34,6 +34,13 @@ saves carry the same number as `appVersion`. How a release is cut is in
   report carries one line per such dimension, marked **(I)** with the evidence it
   does have and the words *to be set by hand*; a number chosen to close the mesh
   is not a measurement and is never silent.
+- **The design loop is read when it is due** (2026-11-02). Section 5 of the scan
+  guide stays out of the first read and is named for later — the loop, the patches
+  and what a verdict means are read when the first build is done and a review is
+  about to be asked for. Without that the two guides a reverse task opens with no
+  longer fit in one answer: `model` and `scan-to-cad` together came to 88 690
+  characters against a budget of 80 000, and an agent that has to make a second
+  call to get half its doctrine may not make it.
 - **The inventory is counted against the scan, mechanically** (2026-11-02). A list
   written from the agent's own reading is as complete as that reading was, so the
   plan gate now puts the scan's own `curvedRuns` — every radius, every repeated
