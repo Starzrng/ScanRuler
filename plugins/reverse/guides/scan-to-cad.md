@@ -20,7 +20,7 @@ Deliverables next to the scan: `<part>_CAD.step`, `<part>_CAD.scanruler` (`proje
 
 - The model guide's §1 (tools, the session, notes, batches, jobs, helpers, context), then `scan_open` with the full path — `saveTo` when the page holds work. The first read of this guide gives the setup, the inspection, the datums, the archetypes, the design loop and the handover; its §3 Measuring comes under `later` with when to read it, and is read by section when that moment comes.
 - **Task list:** inspect, classify, decide T → **the plan**: archetype, the region inventory and the target, set with `reverse_plan_set` and posted in the chat with the defaults (§1) → datums → **the design loop** (§5): a step, `reverse_body_review`, the top place fixed, until the target → the handover checks, export, document.
-- **The gates, before the first feature:** (1) the freeform triage's verdict (§1) — smooth or faceted, which route — (2) the region inventory, small items too (tabs, notches, lips, seats), (3) the target: `reverse_plan_set { archetype, regions, target: { withinT, tolerance: T } }` — `archetype` one of plate, turned, machined, sheetMetal, shelledHousing, facetedHousing, rotationallyPatterned, castWithMachinedFeatures, smoothSolidCasting, mouldedHousingWithKeys, volute, freeformThinShell, freeformSurface, other (§4a); `withinT` defaults by class to 90 % of the scan within T on analytic parts, 85 % on castings and mouldings, 75 % on freeform shells and the surface route; the person may set another in the first ask; `tolerance` keeps a reading at a looser T from counting. All three in the chat. A region found later: `reverse_plan_set` again — ticks stay. A feature added with no plan answers a warning: that warning means the gates were skipped.
+- **The gates, before the first feature:** (1) the freeform triage's verdict (§1) — smooth or faceted, which route — (2) the region inventory, small items too (tabs, notches, lips, seats), **and its count against `scan_segment` by kind (§1)** — cylinders, cones, spheres and tori found versus listed, every extra region named before you build — (3) the target: `reverse_plan_set { archetype, regions, target: { withinT, tolerance: T } }` — `archetype` one of plate, turned, machined, sheetMetal, shelledHousing, facetedHousing, rotationallyPatterned, castWithMachinedFeatures, smoothSolidCasting, mouldedHousingWithKeys, volute, freeformThinShell, freeformSurface, other (§4a); `withinT` defaults by class to 90 % of the scan within T on analytic parts, 85 % on castings and mouldings, 75 % on freeform shells and the surface route; the person may set another in the first ask; `tolerance` keeps a reading at a looser T from counting. All three in the chat. A region found later: `reverse_plan_set` again — ticks stay. A feature added with no plan answers a warning: that warning means the gates were skipped.
 - **Ticking off:** `reverse_plan_tick { region, feature }` when a region is built, `{ region, skip: reason }` when it is left out — every skip is in the final reply. A feature removed after failing and made needless by another: `reverse_plan_replace { removed, by, reason }`, `by` a feature that is built — the verdict lists it with the reason, and the final reply names it.
 - **The run ends when the verdict says met** — the target reached, every region ticked or skipped, nothing removed after failing that was not built again, and no `kind: "feature"` patch over T left on a plan region — or with the person's sign-off on less after you said what is left. The share within T alone is not the verdict: the last fan reached 88.9 % in twenty minutes with its blade roots removed and its blades 0.5 mm off, and handed over. Below the verdict the reply says **"not done"** with the open places, never "done with limitations". **No budget of your own:** when a run's cost worries you, say so in the chat and ask — the last run switched to "wrap up" at about 125 calls and told no one.
 - **A feature that fails and is removed is said in the chat at once,** with what its absence leaves (the review's place there). Removing one answers a reminder; the final compare lists every one.
@@ -47,6 +47,7 @@ Deliverables next to the scan: `<part>_CAD.step`, `<part>_CAD.scanruler` (`proje
 
   T = max(process value, 3 σ_scan), plus about 0.1 % of the span on castings and mouldings; machined faces of a casting at the machined T. Everything follows from it: compare `range: T`, deviation `tolerance: T, range: 3T`, `maxDistance` ≈ 10 T but under the wall, the small-angle rule (§2). Never inherit the 0.1 mm defaults.
 - **Feature inventory with intent:** every hole, bore, pocket, slot, boss, rib, flange and web, seen from two directions, each with its *function* and the *nominal* that implies — clearance holes (M4 → 4.5, M5 → 5.5, M6 → 6.6, M8 → 9), tap drills (M6 → 5.0), catalogue bores (6, 8, 10, 12, 15, 17, 20, 22, 25, 30…), bosses 2–2.5 × the screw, ribs 0.5–0.7 of the wall, draft 0.5/1/1.5/2/3°, round radii, equal bolt circles, 15/30/45/60° angles; datums are the faces that mate. **Snap to the nominal when the measurement is within T, record both, never snap across T** — positions too: a symbol centred in its disc, a row of windows on its pitch. Tick features off as built; the last part's missing hole was never on a list.
+- **Count the inventory against the scan, mechanically, before building.** A list written from your own reading is as complete as your reading was. The scan can be asked directly: `scan_segment { kind: "cylinder" }` (and `"cone"`, `"sphere"`, `"torus"`) returns the regions that fit that surface with their radius and axis, and `scan_pattern` counts repeated ones. Put the counts beside the inventory — cylinders found / cylinders listed, tori found / tori listed — and account for every region that is not on the list before the first feature. A region you cannot name is a feature you have not understood; `element_fit` it, read its radius and axis, and decide what it is. On a machined or moulded part the count of analytic regions is the size of the job: a part whose scan segments into thirty cylinders and a dozen tori is not a plate with a slot, whatever its silhouette looks like from above.
 - **Ask before the first build — in the chat, one round.** The person's notes on the last parts were nearly all about choices made without asking. Before the first feature, post the defaults below and the modelling approach (next point) in the chat — that is where the person reads; a note in the viewport is easy to miss and scrolls away as operations run. One `reverse_note_add` on the part may point to it in one line. Build on them unless the answer differs:
   - **One continuous body**, even where the real part is two mouldings (lid and base): no parting-line step, rounds unbroken across it. A wrapped assembly (shells, a cover, screws) too: one solid of its outside, no inferred interior — say so in the defaults; separate shells only when asked. Two runs on one pak read alike either way (86–87 % within T), and the shells' interior was all inferred.
   - **Steps and warps under T are one surface** — a 0.14 mm raised deck is warp, not a feature.
@@ -213,15 +214,55 @@ The model guide's §3, and:
 - Both maps read (§5): nothing on the model side standing proud that is not intent; every **no scan** area named as inferred.
 - Every hotspot over T on the scan side is modelled or named in the report — a row of small ones at a pitch is a feature (tabs, clips, ribs), not scatter.
 - The plan: every region ticked or skipped with its reason; the target met, or "not done" in the reply with what is left; every feature removed after failing named.
+- **Every analytic feature of the inventory built, or its absence said.** Read the model back and count its faces by kind (`reverse_body_describe`, or the faces `reverse_export_step { verify: true }` numbers): planes, cylinders, cones, spheres, tori. Compare each count with the scan's own segmentation (§1's count) and with the inventory. A silhouette can be right while a bore, a boss's foot round or a whole fillet system is missing; a percentage within T cannot tell you which, because flat area dominates it. A feature present in the scan's segmentation and absent from the model is either built or named in the reply — there is no third state, and "detail I did not get to" is not an answer when the feature is a hole.
+- **The percentage is a share of area, not a verdict on completeness.** 60 % within T with a face for every region is better evidence than 85 % on a model whose geometry is one prism. Report both, and never let the first number stand alone as the answer.
+
+## 5b. When the pictures do not reach you
+
+The loop above is written for an agent that can see. If your channel hands you a
+picture tool's answer as a path — a file named in the JSON rather than an image
+in your context — then you cannot look, and the loop quietly degrades into
+guessing from numbers alone. That has already happened: a run that could not open
+its own deviation maps built a model with no round face at all and reported 58 %
+within tolerance as if it were progress.
+
+**Say it once, in the chat and in the report:** "pictures are produced but not
+shown to me on this channel; I am working from the numbers." Not a footnote — the
+person has to know which decisions were made blind.
+
+**Then replace every "look at it" with the call that numbers it.** A picture says
+where and what kind; these fields say the same in numbers, and they are the pairs
+to use in place of the renders:
+
+| a picture would tell you | the call that says it in numbers |
+|---|---|
+| where the model is wrong, and how much | `reverse_body_review { tolerance: T }` → `places` ranked, each with mm³, depth, `shape`, `at`, `box` |
+| missing or extra material | that place's `shape` (`lump`, `layer`, `far`) and `by` (`volume`, `map`, `both`) |
+| which feature a place belongs to | the place's `face` and `madeBy` |
+| the profile across a place | `section_render { frame: { world: box }, offsets: [...] }` → `gap.inside`, `gap.outside`, `overBox` — the outline is in the answer, not only in the picture |
+| how far a wall or a floor sits off | `scan_heightmap { plane, of: "deviation", box }` → the grid of numbers |
+| whether a face is one surface or a step | `scan_fit_surface { box }` → plane / bilinear / quadric rms and worst |
+| which patch of the model stands proud, and off what | `reverse_body_compare { bodies, range: T }` → `patches` with `box` and `madeBy` |
+| the radius a fillet there should have | `reverse_body_fillet_read { body, edges }` → radius, sigma, nominal, sigmas |
+| how one feature sits against the scan | `reverse_body_compare { feature, range: T }` → `numbers`: its size beside the scan's reading now, in sigmas |
+
+**Work the list, not the impression.** Take the next feature from the review's
+ranked `places` and from the inventory's unbuilt entries. A picture lets you
+notice a shape nobody measured; without one, §1's count of analytic regions
+against `scan_segment` is what finds what you missed — which is why that count is
+a gate and not a habit.
+
+This section is a substitute, not a preference. When the pictures do reach you,
+look at them as §5 says; when they do not, say so and use these.
 
 ## 6. Threads
 Signs: a striped wall, an irregular slice, a cylinder fit with high sigma. `reverse_thread_read` along each small bore (a fitted cylinder, the modelled face, or a line), batched: pitch, minor, major, hand, `suggested`, and along a face the `feature` ready to add. `thread: false` beside a pitch is a ripple within the scan's noise (`contrast` against `noise`) — a plain bore. Size from the crest Ø (≈ minor, slightly large): crest 5.1–5.2 rules out M5 → M6×1. If the user names a size the evidence contradicts, show the evidence and make the change trivial if they insist.
 
 ## 7. Report (`<part>_REPORT.md`)
-Only numbers you computed. 1 Files (with colour map and range). 2 Scan: size, rims (missing vs physical), artefacts, not modelled, asymmetry, σ_scan. 3 Class and T, analytic vs not, freeform outcome. 4 Datums and residuals, STEP re-read. 5 Modelling approach. 6 Parameters: name | value | measured basis | nominal and why. 7 Features: feature | function | measured | nominal | **M** measured / **P** partly supported / **I** inferred. 8 Assumptions and limitations. 9 Validation: build status, validity, volume; coverage, RMS, mean, % within ±T, p95 (machined faces apart); `far` both sides; the model side: % backed by scan, % within ±T, its `far.outside` and the **no scan** areas with what was inferred there; every remaining patch on either map with its cause (a–d); the loops — how many reviews, and the trend from the first to the last. 10 Revision log.
+Only numbers you computed. 1 Files (with colour map and range). 2 Scan: size, rims (missing vs physical), artefacts, not modelled, asymmetry, σ_scan. 3 Class and T, analytic vs not, freeform outcome. 4 Datums and residuals, STEP re-read. 5 Modelling approach. 6 Parameters: name | value | measured basis | nominal and why. 7 Features: feature | function | measured | nominal | **M** measured / **P** partly supported / **I** inferred — and beside it the faces by kind, model against the scan's segmentation, with every inventory feature not built and why. 8 Assumptions and limitations. 9 Validation: build status, validity, volume; coverage, RMS, mean, % within ±T, p95 (machined faces apart); `far` both sides; the model side: % backed by scan, % within ±T, its `far.outside` and the **no scan** areas with what was inferred there; every remaining patch on either map with its cause (a–d); the loops — how many reviews, and the trend from the first to the last. 10 Revision log.
 
 ## 8. Final reply
-The target first — met, or **not done** with the open places; then class, T and the headline numbers; the judgement calls; remaining deviations and what could not be done; notes resolved and still open; the files. No recap of every step.
+The target first — met, or **not done** with the open places; then class, T and the headline numbers, **the faces by kind beside the scan's segmentation and every inventory feature not built**; the judgement calls; remaining deviations and what could not be done; notes resolved and still open; the files. No recap of every step.
 
 ## Fallbacks
 
@@ -247,3 +288,6 @@ Only when no call above answers the question — and say in the report what was 
 | `noScanPct` high, a `noScan` patch | Model surface no scan stands behind | Inferred: say so (P/I) — or it is not on the part |
 | A sketch with more than ten short lines in a row | A polyline where the part has a curve | Refit the chain as lines, arcs or a spline (`fit` with `within`) |
 | A fit's `fitted` entry says "profile crosses itself" | The fitted pieces cross: one outline gives several regions | Refit with `within`, a higher `detail` or less `closeGaps`; `accept` is refused until it is one region |
+| The model has no cylinder, cone, torus or sphere face, while the scan segments into many | The holes, the turned features and the whole fillet system are missing; the silhouette alone passed for the part | Go back to §1's count: segment the scan by kind, list every region, and build them — a percentage within T will not show this |
+| A share within T quoted on a model with a handful of faces | Flat area dominates the share; the number describes the plate, not the part | Report faces by kind beside it, and the inventory's built/unbuilt count |
+| Picture tools answer with a file path, not an image | Your channel does not carry pictures; every "look at it" in §5 is being skipped | §5b: say so in the chat and the report, and use the numeric pairs it lists |
