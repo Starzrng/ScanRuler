@@ -293,9 +293,10 @@ export class FlatScene {
           this.beginPinDrag(pin, e)
           return true
         }
-        // Ctrl is the sketch's "no snapping" and has to be able to start a
-        // drag; Shift and Meta are left to the navigator's chords.
-        if (this.onSheetDown && !e.shiftKey && !e.metaKey) {
+        // Ctrl, or Command on a Mac, is the sketch's "no snapping" and has to
+        // be able to start a drag; Shift is left to the navigator's chords. No
+        // scheme binds Command, and the navigator does not read it.
+        if (this.onSheetDown && !e.shiftKey) {
           const p = this.pick(e.clientX, e.clientY)
           if (p && this.onSheetDown(p, { alt: e.altKey, ctrl: modHeld(e), unitsPerScreenPx: this.unitsPerScreenPx() })) {
             this.beginSheetDrag(e)
@@ -308,7 +309,7 @@ export class FlatScene {
         }
         // A chord the user's scheme still gives the camera — Ctrl+left in
         // Tinkercad's — stays the camera's.
-        if (this.boxSelect && !e.metaKey && !this.viewport.nav.navigates(e)) {
+        if (this.boxSelect && !this.viewport.nav.navigates(e)) {
           this.beginBox(e)
           return true
         }
@@ -811,7 +812,7 @@ export class FlatScene {
       if (!p) return
       if (!d.moved) this.container.style.cursor = 'grabbing'
       d.moved = true
-      this.onSheetDrag?.(p, { alt: ev.altKey, ctrl: ev.ctrlKey, unitsPerScreenPx: this.unitsPerScreenPx() })
+      this.onSheetDrag?.(p, { alt: ev.altKey, ctrl: modHeld(ev), unitsPerScreenPx: this.unitsPerScreenPx() })
     }
     const up = (ev: PointerEvent) => {
       document.removeEventListener('pointermove', move)
@@ -820,7 +821,7 @@ export class FlatScene {
       const d = this.sheetDragging
       this.sheetDragging = null
       this.container.style.cursor = this.pinHover || this.dragHover ? 'grab' : this.baseCursor
-      const meta = { alt: ev.altKey, shift: ev.shiftKey, ctrl: ev.ctrlKey, unitsPerScreenPx: this.unitsPerScreenPx() }
+      const meta = { alt: ev.altKey, shift: ev.shiftKey, ctrl: modHeld(ev), unitsPerScreenPx: this.unitsPerScreenPx() }
       if (d?.moved) this.onSheetDragEnd?.(meta)
       else {
         const p = this.pick(start.x, start.y)
@@ -843,7 +844,7 @@ export class FlatScene {
     }
     if (!this.onHoverPoint) return
     const p = this.sheet.visible ? this.pick(e.clientX, e.clientY) : null
-    this.onHoverPoint(p, e.clientX, e.clientY, e.altKey, e.ctrlKey)
+    this.onHoverPoint(p, e.clientX, e.clientY, e.altKey, modHeld(e))
   }
 
   /** Document spots on screen, in client pixels — for hit-testing the marks
